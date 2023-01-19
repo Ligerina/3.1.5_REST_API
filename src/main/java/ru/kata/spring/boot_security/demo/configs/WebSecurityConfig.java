@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Configuration
@@ -34,8 +33,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/getUserInfo").hasAnyRole("USER", "ADMIN")
-                .anyRequest().authenticated()
+                .antMatchers("/api/**").permitAll()
                 .and()
+                .csrf().disable()
                 .formLogin().successHandler(successUserHandler)
                 .permitAll()
                 .and()
@@ -56,17 +56,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return daoAuthenticationProvider;
     }
 
-    // аутентификация inMemory
-//    @Bean
-//    @Override
-//    public UserDetailsService userDetailsService() {
-//        UserDetails user =
-//                User.withDefaultPasswordEncoder()
-//                        .username("user")
-//                        .password("user")
-//                        .roles("USER")
-//                        .build();
-//
-//        return new InMemoryUserDetailsManager(user);
-//    }
+
 }

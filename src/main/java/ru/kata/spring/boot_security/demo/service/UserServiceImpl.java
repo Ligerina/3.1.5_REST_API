@@ -8,10 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
-//import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.List;
-
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,13 +23,11 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public List<User> getListUser() {
         return userRepository.findAll();
     }
-
 
     @Override
     public void saveNewUser(User user) {
@@ -53,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(Long id) {
-        return userRepository.getReferenceById(id);
+        return userRepository.findById(id).get();
     }
 
     @Override
