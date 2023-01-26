@@ -14,18 +14,13 @@ import java.util.List;
 @RequestMapping(value = "/user")
 public class UserController {
 
-    private final UserService userService;
 
-    private final RoleRepository roleRepository;
+    public UserController() {
 
-    public UserController(UserService userService, RoleRepository roleRepository) {
-        this.userService = userService;
-        this.roleRepository = roleRepository;
     }
 
     @GetMapping(value = "/getUserInfo")
-    public String getUserInfo(Principal principal, Model model){
-        model.addAttribute("userInfo",userService.getUser(principal.getName()));
+    public String getUserInfo(){
         return "UserView";
     }
 

@@ -2,7 +2,6 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,45 +27,13 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String printWelcome(ModelMap model, Principal principal) {
-        model.addAttribute("UserList", userService.getListUser());
-        model.addAttribute("UserInfo", userService.getUser(principal.getName()));
-        model.addAttribute("ListRoles", roleRepository.findAll());
-        return "StartPage";
+    public String printWelcome() {
+        return "StartRestPage";
     }
 
-    @RequestMapping(value = "/addNewUser1")
-    public String addNewUser(Model model, Principal principal) {
-        model.addAttribute("User", new User());
-        model.addAttribute("UserInfo", userService.getUser(principal.getName()));
-        model.addAttribute("roleList", roleRepository.findAll());
+    @RequestMapping(value = "/addNewUser")
+    public String addNewUser() {
         return "UserInfo";
-    }
-
-    @GetMapping(value = "/addOrUpdate")
-    public String AddingPerson(@ModelAttribute("User") User user) {
-        System.out.println("Saving the user");
-        if(userService.loadUserByUsername(user.getUsername()) != null){ // TODO
-            userService.updateUser(user);
-        } else {
-            userService.saveNewUser(user);
-        }
-        return "redirect:/admin";
-    }
-
-    @GetMapping(value = "/updUser/{id}")
-    public String updUser(@PathVariable("id") Long id, Model model) {
-        User user = userService.getUser(id);
-        model.addAttribute("User",user);
-        List<Role> roleList = roleRepository.findAll();
-        model.addAttribute("roleList", roleList);
-        return "UserInfo";
-    }
-
-    @GetMapping(value = "/deleteUser/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
-        return "redirect:/admin";
     }
 
 }

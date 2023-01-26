@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import java.util.List;
+import java.security.Principal;
+
 
 @RestController
 @RequestMapping("/api")
@@ -27,6 +28,11 @@ public class RestAdminController {
         return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/currentUser")
+    public ResponseEntity<?> getCurrentUser(Principal principal){
+        return new ResponseEntity<>(userService.getUser(principal.getName()), HttpStatus.OK);
+    }
+
     @PostMapping(value = "/users")
     public ResponseEntity<?> addUser(@RequestBody User user){
         userService.saveNewUser(user);
@@ -43,6 +49,11 @@ public class RestAdminController {
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id){
         userService.deleteUser(id);
         return new ResponseEntity<>("User with id = " + id + " was deleted", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/roles")
+    public ResponseEntity<?> getAllRoles(){
+        return new ResponseEntity<>(userService.getListRoles(), HttpStatus.OK);
     }
 
 //    @GetMapping(value = "/users/{id}")
